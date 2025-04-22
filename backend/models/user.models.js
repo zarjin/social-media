@@ -30,10 +30,8 @@ const userSchema = new mongoose.Schema(
     worksAt: String,
     country: String,
     relationship: String,
-    followers: [],
-    following: [],
   },
-  { timestamps: true }
+  { timestamps: true },
 )
 
 const User = mongoose.model("User", userSchema)

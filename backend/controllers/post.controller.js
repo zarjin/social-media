@@ -44,3 +44,30 @@ export const deletePost = async (req, res) => {
     res.status(500).json({ message: "Post Delete Error" })
   }
 }
+
+export const likesPost = async (req, res) => {
+  const userId = req.user.id
+  const { id } = req.params
+
+  try {
+    const post = await Post.findById(id)
+    if (!post) return res.status(404).json({ message: "Post not found" })
+
+    const alreadyLiked = post.likes.includes(userId)
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      id,
+      {
+        [alreadyLiked ? "$pull" : "$push"]: { likes: userId },
+      },
+      { new: true }, // to return the updated document
+    )
+
+    return res.status(200).json({
+      message: alreadyLiked ? "Post unliked" : "Post liked",
+      likes: updatedPost.likes,
+    })
+  } catch (error) {
+    return res.status(500).json({ message: "Error liking post", error })
+  }
+}
