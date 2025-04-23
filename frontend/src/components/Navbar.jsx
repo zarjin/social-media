@@ -1,40 +1,83 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router";
 import { Home, CircleUserRound, ImagePlus, LogIn, LogOut } from "lucide-react";
+import { AuthContext } from "../context/AuthContext";
 
 export default function Navbar() {
+  const { isAuthenticated, logout } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
-    <main className="w-full h-16 bg-[#232323] text-[#e5e5e5] flex items-center justify-around">
-      <div className="logo font-semibold cursor-pointer">LOGO</div>
-      <nav className=" flex  items-center space-x-24">
-        <li className="list-none">
-          <Link to="/">
-            <Home />
+    <header className="w-full h-16 bg-black text-white shadow-lg sticky top-0 z-50 backdrop-blur-sm bg-opacity-90 border-b border-dark-green/20">
+      <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between gap-4">
+        {/* Logo */}
+        <div className="flex items-center">
+          <Link
+            to="/"
+            className="text-xl font-bold tracking-wider cursor-pointer transition-all duration-300 hover:scale-105"
+          >
+            SOCIAL<span className="text-green-600">HUB</span>
           </Link>
-        </li>
+        </div>
 
-        <li className="list-none">
-          <Link to="/create-post">
-            <ImagePlus />
-          </Link>
-        </li>
+        {/* Desktop Navigation */}
+        <nav className="flex items-center justify-center">
+          <ul className="flex space-x-8">
+            <li className="list-none">
+              <Link
+                to="/"
+                className="flex flex-col items-center transition-all duration-300 hover:text-green-600"
+              >
+                <Home className="h-5 w-5 text-white" />
+                <span className="text-xs mt-1 text-white">Home</span>
+              </Link>
+            </li>
 
-        <li className="list-none">
-          <Link to="/profile">
-            <CircleUserRound />
-          </Link>
-        </li>
-      </nav>
+            <li className="list-none">
+              <Link
+                to="/create-post"
+                className="flex flex-col items-center transition-all duration-300 hover:text-green-600"
+              >
+                <ImagePlus className="h-5 w-5 text-white" />
+                <span className="text-xs mt-1 text-white">Post</span>
+              </Link>
+            </li>
 
-      <div className="auth space-x-3">
-        <button className="cursor-pointer">
-          <LogIn />
-        </button>
+            <li className="list-none">
+              <Link
+                to="/profile"
+                className="flex flex-col items-center transition-all duration-300 hover:text-green-600"
+              >
+                <CircleUserRound className="h-5 w-5 text-white" />
+                <span className="text-xs mt-1 text-white">Profile</span>
+              </Link>
+            </li>
+          </ul>
+        </nav>
 
-        <button className="cursor-pointer">
-          <LogOut />
-        </button>
+        {/* Desktop Auth Buttons */}
+        <div className="flex space-x-4">
+          {isAuthenticated ? (
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-1 bg-dark-green text-white px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 hover:bg-green-900 hover:shadow-md"
+            >
+              <LogOut className="h-4 w-4" />
+              <span>Logout</span>
+            </button>
+          ) : (
+            <Link to="/login">
+              <button className="flex items-center gap-1 bg-green-600 text-white px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-300 hover:bg-green-700 hover:shadow-md">
+                <LogIn className="h-4 w-4" />
+                <span>Login</span>
+              </button>
+            </Link>
+          )}
+        </div>
       </div>
-    </main>
+    </header>
   );
 }
