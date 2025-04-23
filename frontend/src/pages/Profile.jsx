@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "../context/UserContext";
+import { PostContext } from "../context/PostContext";
 import {
   MapPin,
   Briefcase,
@@ -14,6 +15,7 @@ import {
 
 export default function Profile() {
   const { profileData, updateUser } = useContext(UserContext);
+  const { likesPost } = useContext(PostContext);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editFormData, setEditFormData] = useState({
     firstname: profileData?.firstname || "",
@@ -171,7 +173,7 @@ export default function Profile() {
                 className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300"
               >
                 <img
-                  src={post.img}
+                  src={post.images}
                   alt={post.title}
                   className="w-full h-56 object-cover"
                 />
@@ -180,10 +182,13 @@ export default function Profile() {
                     {post.title}
                   </h3>
                   <div className="flex justify-between items-center text-sm text-gray-600">
-                    <div className="flex items-center">
+                    <button
+                      onClick={() => likesPost(post._id)}
+                      className="flex items-center hover:text-red-600 transition-colors duration-300"
+                    >
                       <Heart className="h-5 w-5 mr-1 text-red-500" />
                       <span>{post.likes.length} likes</span>
-                    </div>
+                    </button>
                     <span>{formatDate(post.createdAt)}</span>
                   </div>
                 </div>

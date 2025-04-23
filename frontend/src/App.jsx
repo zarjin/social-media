@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import Navbar from "./components/Navbar";
 import { AuthProvider } from "./context/AuthContext";
 import { UserProvider } from "./context/UserContext";
+import { PostProvider } from "./context/PostContext";
 import { ToastContainer } from "react-toastify";
 import CreatePost from "./pages/CreatePost";
 import Home from "./pages/Home";
@@ -17,14 +18,16 @@ export default function App() {
         <ToastContainer />
         <AuthProvider>
           <UserProvider>
-            <Navbar />
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/create-post" element={<CreatePost />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/login" element={<Login />} />
-            </Routes>
+            <PostProvider>
+              <Navbar />
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/create-post" element={<CreatePost />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/login" element={<Login />} />
+              </Routes>
+            </PostProvider>
           </UserProvider>
         </AuthProvider>
       </BrowserRouter>
