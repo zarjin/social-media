@@ -42,6 +42,7 @@ export const AuthProvider = ({ children }) => {
       const { data } = await axios.get(`${AUTH_API}/logout`, {
         withCredentials: true,
       });
+      checkAuth();
       toast.success(data.message);
       setIsAuthenticated(false);
     } catch (error) {
@@ -54,6 +55,7 @@ export const AuthProvider = ({ children }) => {
       const { data } = await axios.get(`${AUTH_API}/check-auth`, {
         withCredentials: true,
       });
+
       setIsAuthenticated(data.authentication);
     } catch (error) {
       console.log("Auth check error:", error);

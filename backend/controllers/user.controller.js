@@ -69,3 +69,43 @@ export const updateUser = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+export const Following = async (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    const alreadyFollowing = user.following.includes(userId);
+    const followingUser = await User.findByIdAndUpdate(
+      id,
+      {
+        [alreadyFollowing ? "$pull" : "$push"]: { following: userId },
+      },
+      { new: true }
+    );
+    res.status(200).json(followingUser);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};
+
+export const Followers = async (req, res) => {
+  const userId = req.user.id;
+  const { id } = req.params;
+  try {
+    const user = await User.findById(id);
+    const alreadyFollowers = user.followers.includes(userId);
+    const followersUser = await User.findByIdAndUpdate(
+      id,
+      {
+        [alreadyFollowers ? "$pull" : "$push"]: { followers: userId },
+      },
+      { new: true }
+    );
+    res.status(200).json(followersUser);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
+};

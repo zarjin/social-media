@@ -1,5 +1,10 @@
 import express from "express";
-import { getUser, updateUser } from "../controllers/user.controller.js";
+import {
+  Followers,
+  Following,
+  getUser,
+  updateUser,
+} from "../controllers/user.controller.js";
 import authMiddleware from "../middlewares/authentication.middlewares.js";
 import upload from "../config/multer.js";
 
@@ -16,5 +21,8 @@ userRouter.put(
   ]),
   updateUser
 );
+
+userRouter.put("/following/:id", authMiddleware, Following);
+userRouter.put("/followers/:id", authMiddleware, Followers);
 
 export default userRouter;
